@@ -2,3 +2,10 @@ name = "Kelley"
 uuid = "a5d43a2e-b50d-4756-834d-b0c5e39f00ee"
 authors = ["bruno "]
 version = "0.1.0"
+
+[deps]
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+HiGHS = "87dc4568-4c63-4d18-b0c0-bb2238e4078b"
+JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

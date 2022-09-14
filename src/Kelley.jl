@@ -1,44 +1,44 @@
 module Kelley
+
+struct KelleyAlgorithm end
+
 using JuMP
 import HiGHS
 using LinearAlgebra
 using ForwardDiff
 
-modelo=Model(HiGHS.Optimizer)
-@variable(modelo, -2<=x[1:2]<=2)
+export optimize!, KelleyAlgorithm
 
-function cut(g::Function, a::Vector)
-    ∇g=x -> ForwardDiff.gradient(g,x)
-    cut= g(a)+ ∇g(a)⋅(x-a) # para criar x como variavel, devemos definir em @variables
-    return cut
+function cut(
+    gi_x̄::Float64, ∇gi_x̄::Vector{Float64}, x̄::Vector{Float64}, x::Vector{VariableRef}
+) 
+    return gi_x̄ + ∇gi_x̄⋅(x - x̄) # para criar x como variavel, devemos definir em @variables
 end
 
-function g1(x::Vector)
-    z=x[1]^2+(x[2]^2)/4-1 # PRIMEIRA RESTRIÇÃO
-    return z
-end
-
-function g2(x::Vector)
-    z=(x[1]^2)/4+x[2]^2-1 # SEGUNDA RESTRIÇÃO
-    return z
-end
-
-g=[g1,g2] # VETOR COM AS RESTRIÇÕES
-
-while (cond1>=10e-10)
-    optimize!(modelo)
-    v=JuMP.value.(x)
-    #if g1(v)>=g2(v)
-        #@constraint(modelo,cut(g1,v)<=0)
-    #else
-       #@constraint(modelo,cut(g2,v)<=0)
-    #end
-    for i in 1:size(g)[1] # ALGORITMO
-        @constraint(modelo,cut(g[i],v)<=0)
+function JuMP.optimize!(
+    ::KelleyAlgorithm, f::Function, g::Function, n::Int;
+    ∇g = x -> ForwardDiff.jacobian(g,x), lb = -1e6, ub = 1e6
+)
+    m = length(g(zeros(Float64, n)))
+    model = Model(HiGHS.Optimizer)
+    set_silent(model)
+    @variable(model, lb <= x[1:n] <= ub)
+    @objective(model, Min, f(x))
+    stop = false
+    while !stop
+        optimize!(model)
+        x̄ = JuMP.value.(x)
+        g_x̄ = g(x̄)
+        ∇g_x̄ = ∇g(x̄)
+        stop = true
+        for i in 1:m # ALGORITMO
+            if g_x̄[i] >= 1e-9
+                @constraint(model,cut(g_x̄[i], ∇g_x̄[i,:], x̄, x) <= 0)
+                stop = false
+            end
+        end
     end
-    cond1=g1(v)
+    return objective_value(model), JuMP.value.(x)
 end
-optimize!(modelo)
-print(JuMP.value.(x))
-end
+
 end
