@@ -10,10 +10,15 @@ julia> using Kelley
 
 ### Quick Guide
 
-You must create your constraints functions as a unique function $$g: \mathbb{R}^n \rightarrow{} \mathbb{R}^m$$ In Julia code, would be $$g(x)=[...,...,]$$
-and your objective function $$f(x)=....$$ always linear and both with generic arguments. If your objective function is non linear, use the epigraph form instead.
-The call of the function is given by optimize!(KelleyAlgorithm(),objectiveFunction, constraints, number of variables, lower bound, upper bound), as default, lower bound and upper bound are set -1e06 and 1e06, respectively.
-The output of the function gives the objective value and the optimal solution.
+You must create your constraints functions as a unique function $$g: \mathbb{R}^n \rightarrow{} \mathbb{R}^m$$ In Julia code, would be $$g(x)=[g_1(x),g_2(x),\dots,g_n(x)]$$ where $g_i(x)$ are the constraints of the problem.
+and your objective function $$f(x)=....$$ always linear. Both $g(x)$ and $f(x)$ must have generic arguments. If your objective function is non linear, use the epigraph form instead.
+
+The call of the function is given by optimize!(KelleyAlgorithm(), $f$, $g$, number of variables, lower bound, upper bound), as default, lower bound and upper bound are set -1e06 and 1e06, respectively.
+The output gives the objective value and the optimal solution.
+
+The are two stop criteria for the algorithm:
+1. Let $x_k$ be a solution, if $g(x_k) \le \epsilon$, stop, we found an optimal solution. (criterion guaranteed by the convergence theorem) 
+2. Let $x_{k}$ and $x_{k+1}$ be two consecutive solutions, if $||x_{k}-x_{k+1}|| \le \delta$, stop. The improvement of the solution is not big.
 
 ### Example
 Let $$f(x,y)=x-y$$ and the constraints: $$g_1(x,y)=x^2 + \dfrac{y^2}{4} - 1$$ $$g_2(x,y)=\dfrac{x^2}{4} + y^2 - 1$$
