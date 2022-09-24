@@ -11,7 +11,7 @@ julia> using Kelley
 ### How the Kelley Cutting Plane algorithm works
 Let $f(x)$ be the objective function and $G(x)$ the constraint function (convex). Let $S_0$ be an hypercube, such that $G(x) \le 0 \subset S_0$. 
 
-Then, minimize $f(x)$ in $S$. 
+Then, minimize $f(x)$ in $S_0$. 
 
 Let $t_1$ be the solution. Compute the cut $p(x;t_1)=G(t_1)+\nabla G(t_1)\cdot (x-t_1)$, and set $S_1=S_0 \cap p(x;t_1)\le 0$.
 
