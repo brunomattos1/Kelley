@@ -19,8 +19,9 @@ Now, minimize $f(x)$ in $S_1$.
 
 Repeat, until $G(t_k) \le 10^{-6}$
 
-**Remark.** The subproblems minimization ( $f(x)$ in $S_i$ ) is a linear programming problem, since $f(x)$ is linear and $S_i$ is polytope.
+**Remark 1:** The subproblems minimization ( $f(x)$ in $S_i$ ) is a linear programming problem, since $f(x)$ is linear and $S_i$ is polytope.
 
+**Remark 2:** The algorithm creates a cut for each violated constraint, instead of creating only one cut, for the most violated constraint.
 
 ### How to use the package
 
