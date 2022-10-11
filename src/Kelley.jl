@@ -17,7 +17,7 @@ end
 
 function JuMP.optimize!(
     ::KelleyAlgorithm, f::Function, g::Function, n::Int;
-    ∇g = x -> ForwardDiff.jacobian(g,x), lb = -1e6, ub = 1e6
+    Jg = x -> ForwardDiff.jacobian(g,x), lb = -1e6, ub = 1e6
 )
     m = length(g(zeros(Float64, n)))
     model = Model(HiGHS.Optimizer)
@@ -29,16 +29,17 @@ function JuMP.optimize!(
         optimize!(model)
         x̄ = JuMP.value.(x)
         g_x̄ = g(x̄)
-        ∇g_x̄ = ∇g(x̄)
+        Jg_x̄ = Jg(x̄)
         stop = true
-        for i in 1:m # ALGORITMO
-            if g_x̄[i] >= 1e-9
-                @constraint(model,cut(g_x̄[i], ∇g_x̄[i,:], x̄, x) <= 0)
+        for i in 1:m
+            if g_x̄[i] >= 1e-6
+                @constraint(model,cut(g_x̄[i], Jg_x̄[i,:], x̄, x) <= 0)
                 stop = false
             end
         end
     end
-    return objective_value(model), JuMP.value.(x)
+    println("Objective value: ",objective_value(model))
+    print("Solution: ", value.(x))
 end
 
 end
