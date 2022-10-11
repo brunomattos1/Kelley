@@ -6,8 +6,8 @@ end
 
 function g(x)
     return [
-        x[1]^2 + (x[2]^2)/4 - 1, # PRIMEIRA RESTRIÇÃO
-        (x[1]^2)/4 + x[2]^2 - 1 # SEGUNDA RESTRIÇÃO
+        x[1]^2 + (x[2]^2)/4 - 1, # First Constraint
+        (x[1]^2)/4 + x[2]^2 - 1 # Second Constraint
     ]
 end
 
