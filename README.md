@@ -1,5 +1,5 @@
 # Kelley
-Kelley is a Julia package that uses the cut planes method created by J. E. Kelley, Jr. to solve convex optimization problem with linear objective function. Also, this package uses the HiGHS Optimizer for Linear Programming, from JuMP.
+Kelley is a Julia package that uses an acceleration of cutiing planes method created by J. E. Kelley, Jr. to solve convex optimization problem with linear objective function. Also, this package uses the HiGHS Optimizer for Linear Programming, from JuMP.
 
 ### Installation import
 julia> Pkg.add("https://github.com/brunomattos1/Kelley.git")
@@ -13,15 +13,15 @@ Let $f(x)$ be the objective function and $G(x)$ the constraint function (convex)
 
 Then, minimize $f(x)$ in $S_0$. 
 
-Let $t_1$ be the solution. Compute the cut $p(x;t_1)=G(t_1)+\nabla G(t_1)\cdot (x-t_1)$, and set $S_1=S_0 \cap p(x;t_1)\le 0$.
+Let $t_1$ be the solution. Compute the cut $p(x;t_1)=G(t_1)+\nabla G(t_1)\cdot (x-t_1)$, and set $S_1=S_0 \cap p(x;t_1) \leqslant 0$.
 
 Now, minimize $f(x)$ in $S_1$.
 
-Repeat, until $G(t_k) \le 10^{-6}$
+Repeat, until $G(t_k) \leqslant 10^{-6}$
 
 **Remark 1:** The subproblems minimization ( $f(x)$ in $S_i$ ) is a linear programming problem, since $f(x)$ is linear and $S_i$ is polytope.
 
-**Remark 2:** The algorithm creates a cut for each violated constraint, instead of creating only one cut, for the most violated constraint.
+**Remark 2:** The algorithm creates a cut for each violated constraint, instead of creating only one cut, for the most violated constraint, as Kelley proposed.
 
 ### How to use the package
 
@@ -39,7 +39,7 @@ The output gives the objective value and the approximated optimal solution.
 
 The stop criterion is the following:
 
-Let $x_k$ be a solution. If $g(x_k) \le 10^{-6}$, stop, we found an optimal solution. (criterion guaranteed by the convergence theorem)
+Let $x_k$ be a solution. If $g(x_k) \leqslant 10^{-6}$, stop, we found an optimal solution. (criterion guaranteed by the convergence theorem)
 
 ### Example
 Let $$f(x,y)=x-y$$ and the constraints: $$g_1(x,y)=x^2 + \dfrac{y^2}{4} - 1$$ $$g_2(x,y)=\dfrac{x^2}{4} + y^2 - 1$$
