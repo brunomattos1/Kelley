@@ -25,15 +25,15 @@ Repeat, until $G(t_k) \le 10^{-6}$
 
 ### How to use the package
 
-You must create your constraints functions as a unique function $$g: \mathbb{R}^n \rightarrow{} \mathbb{R}^m$$ In Julia code, would be $$g(x)=[g_1(x),g_2(x),\dots,g_n(x)]$$ where $g_i(x)$ are the constraints of the problem.
+You must create your constraints functions as a unique function $$g: \mathbb{R}^n \rightarrow{} \mathbb{R}^m$$ In Julia code, would be $$g(x)=[g_1(x),g_2(x),\dots,g_n(x)]$$ where $g_i(x)$ are the constraints of the problem, and $x$ is a vector.
 
-And your objective function $$f(x)=c\cdot x$$ always linear. Both $g(x)$ and $f(x)$ must have generic arguments. If your objective function is non linear, use the epigraph form instead.
+And your objective function $$f(x)=c \cdot x$$ always linear. Both $g(x)$ and $f(x)$ must have generic arguments. If your objective function is non linear, use the epigraph form instead.
 
 The call of the function is given by 
 ```julia
 optimize!(KelleyAlgorithm(), f, g, number of variables, lb, ub)
 ```
-Where lb and ub are the lower bound of the box containing constraint set, and the upper bound, respectively. As default, $lb=10^{-6}$ and $ub=10^{6}$. If you know better bounds for your problem, you should use it, this way you will decrease the number of iterations.
+Where lb and ub are lower and upper bounds of the variables. You must pass the bounds as a vector of floats, e.g, lb=[0.0, 1.0], ub=[2.3, 3.14]. As default, the bounds are set to be -1e6 and 1e6.
 
 The output gives the objective value and the approximated optimal solution.
 
