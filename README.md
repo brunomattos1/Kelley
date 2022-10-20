@@ -9,11 +9,11 @@ julia> import Kelley
 julia> using Kelley
 
 ### How the Kelley Cutting Plane algorithm works
-Let $f(x)$ be the objective function and $G(x)$ the constraint function (convex). Let $S_0$ be an hypercube, such that $G(x) \leqslant 0 \subset S_0$. 
+Let $f(x)$ be the objective function and $G_i(x)$ the constraints (convex). Let $S_0$ be an hypercube, such that $G_i(x) \leqslant 0 \subset S_0, \ \forall i$. 
 
 Then, minimize $f(x)$ in $S_0$. 
 
-Let $t_1$ be the solution. Compute the the cut $p_i(x;t_1)=G(t_1)+\nabla G(t_1)\cdot (x-t_1), \ \forall i$, and set $S_1=S_0 \cap p_i(x;t_1) \leqslant 0$.
+Let $t_1$ be the solution. Compute the the cut $p_i(x;t_1)=G_i(t_1)+\nabla G_i(t_1)\cdot (x-t_1), \ \forall i$, and set $S_1=S_0 \cap p_i(x;t_1) \leqslant 0$.
 
 Now, minimize $f(x)$ in $S_1$.
 
