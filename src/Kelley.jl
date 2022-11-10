@@ -7,7 +7,7 @@ import HiGHS
 using LinearAlgebra
 using ForwardDiff
 
-export optimize!, KelleyAlgorithm
+export optimize!, show_objective, show_solution, show_model, KelleyAlgorithm
 
 function cut(
     gi_x̄::Float64, ∇gi_x̄::Vector{Float64}, x̄::Vector{Float64}, x::Vector{VariableRef}) 
