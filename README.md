@@ -41,6 +41,7 @@ The stop criterion is the following:
 
 Let $x_k$ be a solution. If $g_i(x_k) \leqslant 10^{-6}, \ \forall i$, stop, we found an optimal solution. (criterion guaranteed by the convergence theorem)
 
+**Remark 3:** If the model contains more than 10000 constraint, the algorithm deletes the 3000 furthest of the current solution. Note: We lost convergence.
 ### Example
 Let $$f(x,y)=x-y$$ and the constraints: $$g_1(x,y)=x^2 + \dfrac{y^2}{4} - 1$$ $$g_2(x,y)=\dfrac{x^2}{4} + y^2 - 1$$
 In Julia, it is written as follows:
@@ -57,8 +58,15 @@ Then, we call the function using the lower bound and upper bound as default.
 ```julia
 optimize!(KelleyAlgorithm(),f,g,2)
 ```
-Getting the following result
+The solution, objective value and the final final form of the model can be seen using the following functions:
 ```julia
-(-1.5970674466118795, [-0.7936493370308374, 0.8034181095810422])
+show_solution()
 ```
 
+```julia
+show_objective()
+```
+and
+```julia
+show_model()
+```
